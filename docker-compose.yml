@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  redpanda:
+    image: docker.redpanda.com/redpandadata/redpanda:latest
+    command:
+      - redpanda start
+      - --overprovisioned
+      - --smp 1
+      - --memory 1G
+      - --reserve-memory 0M
+      - --node-id 0
+      - --kafka-addr PLAINTEXT://0.0.0.0:9092
+      - --advertise-kafka-addr PLAINTEXT://localhost:9092   # 👈 yaha change
+      - --rpc-addr 0.0.0.0:33145
+      - --advertise-rpc-addr redpanda:33145
+ 
+
+    ports:
+      - "9092:9092"   # Kafka API
+      - "9644:9644"   # Admin API
+    networks:
+      - redpanda-net
+
+  console:
+    image: docker.redpanda.com/redpandadata/console:latest
+    environment:
+      KAFKA_BROKERS: "redpanda:9092"
+    ports:
+      - "8080:8080"
+    networks:
+      - redpanda-net
+    depends_on:
+      - redpanda
+
+networks:
+  redpanda-net:
+    driver: bridge
