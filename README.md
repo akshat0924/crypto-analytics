@@ -3,6 +3,7 @@
 This project implements a **Relative Strength Index (RSI) analytics pipeline** using Rust, Redpanda, and Next.js.  
 It is part of the evaluation assignment.
 
+
 ---
 
 ## 🚀 Project Overview
